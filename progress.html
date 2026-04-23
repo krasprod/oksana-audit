@@ -914,6 +914,23 @@ async function saveData() {
 
     if (!r.ok) {
       const err = await r.json();
+      // SHA mismatch = хтось (воркер) уже оновив data.json. Тихо перезавантажуємо state.
+      if (r.status === 409 || /does not match|sha/i.test(err.message || '')) {
+        document.getElementById('admin-status').textContent = 'Оновлюємо з репо...';
+        try {
+          const fresh = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?t=${Date.now()}`);
+          const fj = await fresh.json();
+          state.sha = fj.sha;
+          state.data = JSON.parse(decodeURIComponent(escape(atob(fj.content.replace(/\n/g, '')))));
+          state.dirty = false;
+          state.autosaveDisabled = false;
+          render();
+          document.getElementById('admin-status').innerHTML = '↻ Оновлено з репо · ' + new Date().toLocaleTimeString('uk-UA').slice(0,5);
+          return;
+        } catch (reloadErr) {
+          throw new Error('Конфлікт версій. Натисніть F5.');
+        }
+      }
       throw new Error(err.message || 'Unknown error');
     }
 
@@ -924,7 +941,7 @@ async function saveData() {
     document.getElementById('admin-status').innerHTML = '✓ Автозбережено · ' + new Date().toLocaleTimeString('uk-UA').slice(0,5);
   } catch (e) {
     state.autosaveDisabled = true;
-    document.getElementById('admin-status').innerHTML = '❌ ' + e.message + '<br><span style="font-size:11px;color:var(--muted)">Автозбереження вимкнено. Виправте токен і натисніть «Зберегти прогрес».</span>';
+    document.getElementById('admin-status').innerHTML = '❌ ' + e.message + '<br><span style="font-size:11px;color:var(--muted)">Автозбереження вимкнено. Натисніть F5 або «Зберегти прогрес».</span>';
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {
       localStorage.removeItem('gh_pat');
     }
