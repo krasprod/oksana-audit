@@ -472,7 +472,8 @@ function render() {
 
   // Payment summary
   const totalPrice = d.phases.reduce((s, p) => s + (Number(p.price) || 0), 0);
-  const paidPhases = d.phases.filter(p => p.paid);
+  const priceablePhases = d.phases.filter(p => Number(p.price) > 0);
+  const paidPhases = priceablePhases.filter(p => p.paid);
   const paidSum = paidPhases.reduce((s, p) => s + (Number(p.paid_amount || p.price) || 0), 0);
   const leftSum = Math.max(0, totalPrice - paidSum);
   const payPct = totalPrice ? Math.round(paidSum / totalPrice * 100) : 0;
@@ -481,7 +482,7 @@ function render() {
   document.querySelector('[data-pay-paid]').textContent = pts(paidSum);
   document.querySelector('[data-pay-left]').textContent = pts(leftSum);
   document.querySelector('[data-pay-count]').textContent = paidPhases.length;
-  document.querySelector('[data-pay-total-count]').textContent = d.phases.length;
+  document.querySelector('[data-pay-total-count]').textContent = priceablePhases.length;
   document.querySelector('[data-pay-bar]').style.width = payPct + '%';
 
   // Phases
