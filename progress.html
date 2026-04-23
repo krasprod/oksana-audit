@@ -107,7 +107,19 @@ section{padding:60px 0}
 .phase.open .phase-body{display:block}
 .phase-desc{padding-top:20px;font-size:14px;color:var(--muted);margin-bottom:16px}
 .tasks{list-style:none}
-.task{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.task{display:block;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.task-row{display:flex;align-items:flex-start;gap:12px}
+.task-deliverable{margin-top:10px;margin-left:28px;padding:12px 14px;background:rgba(155,126,199,.08);border-left:3px solid var(--lav,#9B7EC7);border-radius:6px}
+.task-deliverable-label{font-size:11px;font-weight:700;color:var(--lav-deep,#7A5CA8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.task-deliverable-text{font-size:14px;color:var(--ink);line-height:1.55;white-space:pre-wrap}
+.task-admin-form{margin-top:10px;margin-left:28px;padding-top:10px;border-top:1px dashed var(--line)}
+.task-admin-form label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.task-admin-form textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:6px;font-family:inherit;font-size:13px;min-height:70px;resize:vertical;background:var(--white);margin-bottom:8px}
+.task-admin-form textarea:focus{outline:0;border-color:var(--lav-deep,#7A5CA8)}
+.task-admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+.task-admin-actions .btn-send{padding:6px 14px;background:var(--lav-deep,#7A5CA8);color:#fff;border:0;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
+.task-admin-actions .btn-send:hover{opacity:.85}
+.task-admin-actions .btn-unsend{padding:6px 14px;background:#fff;color:var(--muted);border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:12px}
 .task:last-child{border-bottom:0}
 .check{width:22px;height:22px;border:2px solid var(--line);border-radius:6px;flex-shrink:0;margin-top:1px;display:grid;place-items:center;transition:all .15s;cursor:default}
 .task.done .check{background:var(--mint);border-color:var(--mint)}
@@ -518,12 +530,7 @@ function render() {
         ${renderPayBlock(phase, idx)}
         ${renderRequests(phase, idx)}
         <ul class="tasks">
-          ${phase.tasks.map((t, ti) => `
-            <li class="task ${t.done ? 'done' : ''}" data-phase="${idx}" data-task="${ti}">
-              <div class="check" onclick="${state.admin ? `event.stopPropagation();toggleTask(${idx},${ti})` : ''}"></div>
-              <div class="task-text" data-edit="phases.${idx}.tasks.${ti}.title">${t.title}</div>
-            </li>
-          `).join('')}
+          ${phase.tasks.map((t, ti) => renderTask(t, idx, ti)).join('')}
         </ul>
       </div>
     `;
@@ -595,6 +602,65 @@ function bindEdits() {
       }
     });
   });
+}
+
+function renderTask(t, idx, ti) {
+  const hasDeliverable = t.delivered && t.deliverable;
+  const deliverableHtml = (t.deliverable || '').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+  return `
+    <li class="task ${t.done ? 'done' : ''}" data-phase="${idx}" data-task="${ti}">
+      <div class="task-row">
+        <div class="check" onclick="${state.admin ? `event.stopPropagation();toggleTask(${idx},${ti})` : ''}"></div>
+        <div class="task-text" data-edit="phases.${idx}.tasks.${ti}.title">${t.title}</div>
+      </div>
+      ${hasDeliverable ? `
+        <div class="task-deliverable">
+          <div class="task-deliverable-label">📎 Матеріал від Андрія${t.delivered_date ? ' · ' + formatDateLong(t.delivered_date) : ''}</div>
+          <div class="task-deliverable-text" data-edit="phases.${idx}.tasks.${ti}.deliverable">${deliverableHtml}</div>
+        </div>
+      ` : ''}
+      ${state.admin ? `
+        <div class="task-admin-form">
+          <label>Матеріал для клієнтки${t.delivered ? ' (уже надіслано — правки зберігаються)' : ''}</label>
+          <textarea id="task-del-${idx}-${ti}" placeholder="Напишіть шаблон, текст, посилання або будь-який контент, який треба передати клієнтці...">${t.deliverable || ''}</textarea>
+          <div class="task-admin-actions">
+            <button class="btn-send" onclick="sendTaskDeliverable(${idx},${ti})">${t.delivered ? '↻ Оновити у клієнта' : '📨 Надіслати клієнтці'}</button>
+            ${t.delivered ? `<button class="btn-unsend" onclick="unsendTaskDeliverable(${idx},${ti})">↩ Скасувати надсилання</button>` : ''}
+          </div>
+        </div>
+      ` : ''}
+    </li>
+  `;
+}
+
+function sendTaskDeliverable(phaseIdx, taskIdx) {
+  const ta = document.getElementById(`task-del-${phaseIdx}-${taskIdx}`);
+  const text = ta.value.trim();
+  if (!text) { alert('Напишіть текст матеріалу перед надсиланням'); return; }
+  const phase = state.data.phases[phaseIdx];
+  const task = phase.tasks[taskIdx];
+  const wasNew = !task.delivered;
+  task.deliverable = text;
+  task.delivered = true;
+  task.delivered_date = new Date().toISOString().slice(0, 10);
+  if (wasNew) {
+    task.done = true;
+    logEvent(`📨 Надіслано клієнтці матеріал: «${task.title}» (етап «${phase.title}»).`, true);
+  } else {
+    logEvent(`↻ Оновлено матеріал для клієнтки: «${task.title}» (етап «${phase.title}»).`);
+  }
+  markDirty();
+  render();
+}
+
+function unsendTaskDeliverable(phaseIdx, taskIdx) {
+  if (!confirm('Скасувати надсилання? Клієнт більше не побачить цей матеріал.')) return;
+  const task = state.data.phases[phaseIdx].tasks[taskIdx];
+  task.delivered = false;
+  task.delivered_date = '';
+  logEvent(`↩ Скасовано надсилання матеріалу: «${task.title}».`);
+  markDirty();
+  render();
 }
 
 function toggleTask(phaseIdx, taskIdx) {
