@@ -654,6 +654,7 @@ function togglePaid(idx) {
   if (phase.paid) {
     phase.paid_date = new Date().toISOString().slice(0,10);
     phase.paid_amount = Number(phase.price) || 0;
+    state.data.current_status = `Оплату отримано ✓ Стартували роботи по етапу «${phase.title}».`;
     logEvent(`💰 Оплата отримана: «${phase.title}» — ${fmtMoney(phase.paid_amount)}. Робота стартує.`, true);
     notifyTelegram(
       `💰 <b>Етап оплачено</b>\n\n` +
