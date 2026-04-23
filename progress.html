@@ -120,6 +120,9 @@ section{padding:60px 0}
 .task-admin-actions .btn-send{padding:6px 14px;background:var(--lav-deep,#7A5CA8);color:#fff;border:0;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
 .task-admin-actions .btn-send:hover{opacity:.85}
 .task-admin-actions .btn-unsend{padding:6px 14px;background:#fff;color:var(--muted);border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:12px}
+.task-admin-actions .btn-ai{padding:6px 14px;background:linear-gradient(135deg,#9B7EC7,#D4968B);color:#fff;border:0;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
+.task-admin-actions .btn-ai:hover{opacity:.88}
+.task-admin-actions .btn-ai:disabled{opacity:.6;cursor:wait}
 .task:last-child{border-bottom:0}
 .check{width:22px;height:22px;border:2px solid var(--line);border-radius:6px;flex-shrink:0;margin-top:1px;display:grid;place-items:center;transition:all .15s;cursor:default}
 .task.done .check{background:var(--mint);border-color:var(--mint)}
@@ -625,6 +628,7 @@ function renderTask(t, idx, ti) {
           <textarea id="task-del-${idx}-${ti}" placeholder="Напишіть шаблон, текст, посилання або будь-який контент, який треба передати клієнтці...">${t.deliverable || ''}</textarea>
           <div class="task-admin-actions">
             <button class="btn-send" onclick="sendTaskDeliverable(${idx},${ti})">${t.delivered ? '↻ Оновити у клієнта' : '📨 Надіслати клієнтці'}</button>
+            <button class="btn-ai" onclick="aiGenerate(${idx},${ti})">✨ AI-автозаповнення</button>
             ${t.delivered ? `<button class="btn-unsend" onclick="unsendTaskDeliverable(${idx},${ti})">↩ Скасувати надсилання</button>` : ''}
           </div>
         </div>
@@ -651,6 +655,39 @@ function sendTaskDeliverable(phaseIdx, taskIdx) {
   }
   markDirty();
   render();
+}
+
+async function aiGenerate(phaseIdx, taskIdx) {
+  const ta = document.getElementById(`task-del-${phaseIdx}-${taskIdx}`);
+  const phase = state.data.phases[phaseIdx];
+  const task = phase.tasks[taskIdx];
+  const btn = ta.parentElement.parentElement.querySelector('.btn-ai');
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '✨ Генеруємо...';
+  try {
+    const r = await fetch('https://client-responses.krasprod-nk.workers.dev/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        taskTitle: task.title,
+        phaseTitle: phase.title,
+        projectName: state.data.project.name,
+        clientName: state.data.project.client,
+        existingText: ta.value.trim(),
+      }),
+    });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'Помилка генерації');
+    ta.value = j.text;
+    ta.focus();
+    btn.textContent = '✓ Згенеровано';
+    setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 2000);
+  } catch (e) {
+    alert('Помилка AI: ' + e.message);
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
 }
 
 function unsendTaskDeliverable(phaseIdx, taskIdx) {
