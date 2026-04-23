@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Прогрес проєкту · Оксана Запорожець</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #2B1A3D;
+  --navy-2: #3A2354;
+  --ink: #1A0E26;
+  --muted: #6B5B7A;
+  --line: #EFE6F0;
+  --bg: #FBF7F9;
+  --white: #FFFFFF;
+  --accent: #E8A87C;
+  --mint: #85C88A;
+  --mint-dark: #2F8833;
+  --pink: #FF6B9A;
+  --rose: #D64F87;
+  --red: #E63946;
+  --amber: #F5B841;
+  --radius: 20px;
+  --shadow-sm: 0 2px 10px rgba(43,26,61,0.06);
+  --shadow-md: 0 12px 40px rgba(43,26,61,0.10);
+  --shadow-lg: 0 30px 80px rgba(43,26,61,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{line-height:1.2;letter-spacing:-0.02em;font-weight:700}
+h1{font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-0.03em}
+h2{font-size:clamp(24px,3.2vw,34px)}
+h3{font-size:20px}
+h4{font-size:16px;font-weight:700}
+p{font-size:16px;color:var(--muted);line-height:1.7}
+button{font-family:inherit;cursor:pointer;border:0}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(251,247,249,.88);backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--navy),var(--rose));color:var(--white);display:grid;place-items:center;font-weight:800;font-size:12px}
+.logo-text small{color:var(--muted);font-weight:500;display:block;font-size:11px}
+.nav-right{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted);font-weight:500}
+.nav-right .updated{display:flex;align-items:center;gap:6px}
+.nav-right .updated::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px rgba(133,200,138,.3)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--white);position:relative;overflow:hidden;padding:60px 0 110px}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,107,154,.18) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(232,168,124,.12) 0%,transparent 50%)}
+.hero::after{content:'';position:absolute;inset:0;opacity:.2;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.2) 1px,transparent 0);background-size:24px 24px}
+.hero-inner{position:relative;z-index:1}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.9);margin-bottom:20px}
+.tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink)}
+.hero h1{color:var(--white);margin-bottom:16px;max-width:820px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-status{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 22px;max-width:720px;margin-top:20px}
+.hero-status .l{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px}
+.hero-status .v{color:rgba(255,255,255,.92);font-size:16px;line-height:1.55}
+
+/* PROGRESS CARD */
+.progress-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-sm);margin-top:-60px;position:relative;z-index:2}
+.progress-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.progress-top h3{margin-bottom:4px}
+.progress-top p{font-size:13px}
+.progress-big{font-size:44px;font-weight:800;color:var(--navy);letter-spacing:-0.03em;line-height:1}
+.progress-big small{font-size:18px;color:var(--muted);font-weight:600}
+.progress-bar{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--pink));transition:width .6s;border-radius:6px}
+
+/* SECTION */
+section{padding:60px 0}
+.section-head{margin-bottom:32px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--rose)}
+.section-head h2{margin-bottom:10px}
+.section-head p{max-width:720px}
+
+/* PHASE */
+.phase{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;transition:box-shadow .2s}
+.phase:hover{box-shadow:var(--shadow-sm)}
+.phase.done{background:linear-gradient(135deg,rgba(133,200,138,.04),rgba(133,200,138,.01))}
+.phase.active{border-color:var(--rose);box-shadow:0 0 0 3px rgba(214,79,135,.08)}
+.phase-head{padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;user-select:none}
+.phase-head-left{display:flex;gap:16px;align-items:center;flex:1;min-width:0}
+.phase-num{width:42px;height:42px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-weight:800;font-size:16px;color:var(--navy);flex-shrink:0}
+.phase.done .phase-num{background:var(--mint);color:var(--white)}
+.phase.active .phase-num{background:var(--rose);color:var(--white)}
+.phase-title{flex:1;min-width:0}
+.phase-title h3{font-size:17px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis}
+.phase-title .meta{font-size:13px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.priority-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.priority-pill.critical{background:rgba(230,57,70,.1);color:var(--red)}
+.priority-pill.high{background:rgba(245,184,65,.14);color:#B8870F}
+.priority-pill.medium{background:rgba(133,200,138,.14);color:var(--mint-dark)}
+.phase-head-right{display:flex;gap:14px;align-items:center;flex-shrink:0}
+.phase-progress-small{font-size:13px;color:var(--muted);font-weight:600}
+.phase-toggle{width:28px;height:28px;border-radius:50%;background:var(--bg);display:grid;place-items:center;transition:transform .2s;font-size:12px;color:var(--muted)}
+.phase.open .phase-toggle{transform:rotate(180deg)}
+.phase-body{display:none;padding:0 28px 26px;border-top:1px solid var(--line)}
+.phase.open .phase-body{display:block}
+.phase-desc{padding-top:20px;font-size:14px;color:var(--muted);margin-bottom:16px}
+.tasks{list-style:none}
+.task{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.task:last-child{border-bottom:0}
+.check{width:22px;height:22px;border:2px solid var(--line);border-radius:6px;flex-shrink:0;margin-top:1px;display:grid;place-items:center;transition:all .15s;cursor:default}
+.task.done .check{background:var(--mint);border-color:var(--mint)}
+.task.done .check::after{content:'✓';color:var(--white);font-weight:800;font-size:13px}
+.task.done .task-text{color:var(--muted);text-decoration:line-through}
+.task-text{flex:1;color:var(--ink)}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.metric{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px}
+.metric-label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
+.metric-values{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.metric-current{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;line-height:1}
+.metric-change{font-size:13px;color:var(--mint-dark);font-weight:700}
+.metric-change.neutral{color:var(--muted);font-weight:600}
+.metric-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.metric-bar-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--pink));border-radius:3px;transition:width .6s}
+.metric-goal{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.event{position:relative;padding:4px 0 24px}
+.event::before{content:'';position:absolute;left:-24px;top:8px;width:14px;height:14px;border-radius:50%;background:var(--white);border:3px solid var(--rose)}
+.event.milestone::before{background:var(--rose)}
+.event-date{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em}
+.event-text{font-size:15px;color:var(--ink);line-height:1.55}
+
+/* ADMIN */
+.admin-panel{position:fixed;bottom:24px;right:24px;background:var(--white);border:2px solid var(--rose);border-radius:16px;padding:16px;box-shadow:var(--shadow-lg);z-index:60;max-width:340px;display:none}
+.admin-panel.visible{display:block}
+.admin-panel h4{margin-bottom:10px;display:flex;align-items:center;gap:8px;color:var(--rose)}
+.admin-panel h4::before{content:'●';color:var(--rose);font-size:10px}
+.admin-panel p{font-size:12px;margin-bottom:10px}
+.admin-btn{width:100%;padding:10px;background:var(--rose);color:var(--white);border-radius:10px;font-weight:700;font-size:13px;margin-top:6px}
+.admin-btn:hover{background:var(--pink)}
+.admin-btn.ghost{background:transparent;color:var(--rose);border:1px solid var(--rose)}
+.admin-btn.ghost:hover{background:rgba(214,79,135,.08)}
+body.admin .task{cursor:pointer;transition:background .15s;border-radius:8px;padding:12px 8px;margin:0 -8px}
+body.admin .task:hover{background:rgba(214,79,135,.05)}
+body.admin .task .check{cursor:pointer}
+body.admin [data-edit]{cursor:text;outline:0;border-radius:4px;padding:2px 4px;margin:-2px -4px}
+body.admin [data-edit]:hover{background:rgba(214,79,135,.07)}
+body.admin [data-edit]:focus{background:rgba(214,79,135,.08);box-shadow:0 0 0 2px rgba(214,79,135,.3)}
+.admin-add-event{display:none;margin-top:16px;padding:16px;background:var(--bg);border-radius:12px}
+body.admin .admin-add-event{display:block}
+.admin-add-event input,.admin-add-event textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;margin-bottom:8px;background:var(--white)}
+.admin-add-event textarea{min-height:60px;resize:vertical}
+.admin-unsaved{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--amber);color:var(--ink);font-size:11px;font-weight:700;margin-left:8px}
+
+/* CLIENT REQUESTS */
+.requests-block{background:linear-gradient(135deg,rgba(245,184,65,.08),rgba(232,168,124,.05));border:1px solid rgba(245,184,65,.25);border-radius:14px;padding:18px 20px;margin-bottom:22px}
+.requests-title{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:#8B6914;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
+.requests-title::before{content:'→';font-size:15px}
+.request-card{background:var(--white);border:1px solid rgba(245,184,65,.2);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.request-card:last-child{margin-bottom:0}
+.request-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.request-title{font-size:15px;font-weight:700;color:var(--ink);flex:1}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap;flex-shrink:0;cursor:default}
+.status-pill.pending{background:rgba(245,184,65,.15);color:#8B6914}
+.status-pill.pending::before{content:'●';color:var(--amber);font-size:9px}
+.status-pill.received{background:rgba(124,108,246,.12);color:#5544D0}
+.status-pill.received::before{content:'●';color:#7C6CF6;font-size:9px}
+.status-pill.done{background:rgba(133,200,138,.14);color:var(--mint-dark)}
+.status-pill.done::before{content:'✓';font-size:11px}
+body.admin .status-pill{cursor:pointer}
+.request-desc{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:12px;white-space:pre-wrap}
+.request-response{background:linear-gradient(135deg,rgba(133,200,138,.08),rgba(133,200,138,.02));border-left:3px solid var(--mint);border-radius:6px;padding:10px 14px;margin-top:10px}
+.response-label{font-size:11px;font-weight:700;color:var(--mint-dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.response-text{font-size:14px;color:var(--ink);line-height:1.55;white-space:pre-wrap}
+.request-form{margin-top:10px;padding-top:12px;border-top:1px dashed var(--line)}
+.request-form textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;min-height:70px;resize:vertical;background:var(--white);margin-bottom:8px}
+.request-form textarea:focus{outline:0;border-color:var(--rose);box-shadow:0 0 0 3px rgba(214,79,135,.1)}
+.request-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-send,.btn-tg{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .15s}
+.btn-send{background:var(--rose);color:var(--white)}
+.btn-send:hover{background:var(--pink)}
+.btn-send:disabled{opacity:.6;cursor:wait}
+.btn-tg{background:#0088cc;color:var(--white)}
+.btn-tg:hover{opacity:.88}
+.request-sent{font-size:13px;color:var(--mint-dark);font-weight:600;padding:8px 0}
+.admin-request-edit{margin-top:10px;padding-top:12px;border-top:1px dashed var(--line)}
+.admin-request-edit label{display:block;font-size:11px;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.admin-request-edit textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;min-height:60px;resize:vertical;background:var(--white)}
+.admin-request-edit textarea:focus{outline:0;border-color:var(--rose);box-shadow:0 0 0 3px rgba(214,79,135,.1)}
+.admin-request-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.admin-request-row button{padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;background:var(--bg);color:var(--ink);border:1px solid var(--line);cursor:pointer}
+.admin-request-row button:hover{background:var(--line)}
+.admin-request-row button.del{color:var(--red);border-color:rgba(230,57,70,.3)}
+.add-request-btn{margin-top:10px;padding:8px 12px;background:transparent;border:1px dashed var(--rose);border-radius:8px;color:var(--rose);font-weight:700;font-size:12px;cursor:pointer;width:100%}
+.add-request-btn:hover{background:rgba(214,79,135,.05)}
+
+/* PAYMENT SUMMARY (top) */
+.pay-summary{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--white);border-radius:var(--radius);padding:28px 32px;margin-top:20px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.pay-summary::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,107,154,.18) 0%,transparent 70%)}
+.pay-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;position:relative;z-index:1}
+.pay-cell .l{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.pay-cell .v{font-size:28px;font-weight:800;color:var(--white);letter-spacing:-0.02em;line-height:1}
+.pay-cell .v small{font-size:15px;color:rgba(255,255,255,.6);font-weight:600;margin-left:4px}
+.pay-cell.accent .v{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pay-cell.mint .v{color:var(--mint)}
+.pay-bar{height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden;margin-top:16px;position:relative;z-index:1}
+.pay-bar-fill{height:100%;background:linear-gradient(90deg,var(--mint),#A8E0AC);border-radius:3px;transition:width .6s}
+
+/* PAYMENT CHIP in phase-head */
+.price-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.price-chip.unpaid{background:rgba(245,184,65,.14);color:#8B6914}
+.price-chip.unpaid::before{content:'💳';font-size:11px}
+.price-chip.paid{background:rgba(133,200,138,.14);color:var(--mint-dark)}
+.price-chip.paid::before{content:'✓';font-size:11px}
+
+/* PAYMENT BLOCK inside phase */
+.pay-block{background:linear-gradient(135deg,rgba(43,26,61,.04),rgba(43,26,61,.01));border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:12px;padding:16px 20px;margin-bottom:22px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.pay-block.paid{border-left-color:var(--mint);background:linear-gradient(135deg,rgba(133,200,138,.06),rgba(133,200,138,.01))}
+.pay-block-left{min-width:0}
+.pay-block-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.pay-block.paid .pay-block-label{color:var(--mint-dark)}
+.pay-block-price{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;line-height:1.1;margin-bottom:6px}
+.pay-block-price small{font-size:14px;color:var(--muted);font-weight:600;margin-left:3px}
+.pay-block.paid .pay-block-price{color:var(--mint-dark)}
+.pay-block-note{font-size:13px;color:var(--muted);line-height:1.5}
+.pay-block-right{display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:160px}
+.pay-block-right .btn-pay-admin{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink)}
+.pay-block-right .btn-pay-admin:hover{background:var(--bg)}
+.pay-block-right .btn-pay-admin.toggle{background:var(--mint);color:var(--white);border-color:var(--mint)}
+.pay-block-right .btn-pay-admin.toggle:hover{background:var(--mint-dark)}
+.pay-block.paid .btn-pay-admin.toggle{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+.paid-mark{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mint-dark);font-weight:700}
+@media(max-width:640px){
+  .pay-block{grid-template-columns:1fr}
+  .pay-block-right{min-width:0}
+}
+
+/* FOOTER */
+footer{padding:40px 0;border-top:1px solid var(--line);background:var(--white);margin-top:40px}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.footer-author{display:flex;align-items:center;gap:12px}
+.footer-author strong{color:var(--ink);font-weight:700}
+.footer-links{display:flex;gap:16px}
+.footer-links a{color:var(--rose);font-weight:600;text-decoration:underline;text-decoration-color:rgba(214,79,135,.3)}
+
+@media(max-width:640px){
+  .phase-head{padding:18px;gap:12px}
+  .phase-body{padding:0 18px 20px}
+  .phase-num{width:36px;height:36px;font-size:14px}
+  .progress-card{padding:24px}
+  .hero{padding:50px 0 100px}
+  .admin-panel{bottom:16px;right:16px;left:16px;max-width:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <div class="logo-mark">ФП</div>
+      <div>
+        <div>Прогрес проєкту</div>
+        <small data-bind="project.name">—</small>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="updated">Оновлено: <span data-bind-date="project.last_updated">—</span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <span class="tag">Публічний трекер проєкту · оновлюється в режимі реального часу</span>
+    <h1>Просування салону <span data-bind="project.name">—</span> — <br>поточний стан робіт</h1>
+    <p style="color:rgba(255,255,255,.75);font-size:17px;max-width:620px">Ця сторінка показує усі етапи проєкту, поточний прогрес і що робиться прямо зараз. Оновлюється автоматично — можете заходити у будь-який момент.</p>
+    <div class="hero-status">
+      <div class="l">Зараз у роботі</div>
+      <div class="v" data-edit="current_status">—</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS CARD -->
+<div class="wrap">
+  <div class="progress-card">
+    <div class="progress-top">
+      <div>
+        <h3>Загальний прогрес проєкту</h3>
+        <p>Готово задач з <span data-total-tasks>—</span> запланованих</p>
+      </div>
+      <div style="text-align:right">
+        <div class="progress-big"><span data-progress-percent>0</span><small>%</small></div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-bar-fill" data-progress-bar style="width:0%"></div></div>
+  </div>
+
+</div>
+
+<!-- PHASES -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Етапи робіт</div>
+      <h2>Що робимо і в якій послідовності</h2>
+      <p>Натисніть на етап, щоб побачити деталі задач. Галочки з'являються по мірі виконання.</p>
+    </div>
+    <div id="phases-list"></div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Метрики проєкту</div>
+      <h2>Що змінюється по факту</h2>
+      <p>Ключові показники бізнесу — порівняння стартових значень з поточними. Оновлюються кожні кілька днів.</p>
+    </div>
+    <div class="metrics" id="metrics-list"></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Стрічка подій</div>
+      <h2>Що відбувалося за днями</h2>
+      <p>Хронологія проєкту — від останніх подій до старту.</p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div class="admin-add-event">
+      <h4 style="margin-bottom:10px;font-size:13px">Додати подію</h4>
+      <input type="text" id="new-event-date" placeholder="Дата (YYYY-MM-DD)" />
+      <input type="text" id="new-event-time" placeholder="Час (HH:MM, опціонально)" />
+      <textarea id="new-event-text" placeholder="Що сталось..."></textarea>
+      <label style="display:flex;gap:6px;align-items:center;font-size:13px;margin-bottom:8px"><input type="checkbox" id="new-event-milestone" /> віха (milestone)</label>
+      <button class="admin-btn" onclick="addEvent()">+ Додати подію</button>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT SUMMARY (bottom) -->
+<section style="background:var(--white);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Фінанси проєкту</div>
+      <h2>Загальна вартість і прогрес оплат</h2>
+      <p>Сума всіх етапів, скільки вже сплачено і що залишилось. Кожен етап можна оплачувати окремо, в будь-якому порядку.</p>
+    </div>
+    <div class="pay-summary" id="pay-summary">
+      <div class="pay-summary-grid">
+        <div class="pay-cell">
+          <div class="l">Загальна вартість проєкту</div>
+          <div class="v"><span data-pay-total>0</span><small data-currency>грн</small></div>
+        </div>
+        <div class="pay-cell mint">
+          <div class="l">Вже оплачено</div>
+          <div class="v"><span data-pay-paid>0</span><small data-currency>грн</small></div>
+        </div>
+        <div class="pay-cell accent">
+          <div class="l">Залишок до сплати</div>
+          <div class="v"><span data-pay-left>0</span><small data-currency>грн</small></div>
+        </div>
+        <div class="pay-cell">
+          <div class="l">Етапів оплачено</div>
+          <div class="v"><span data-pay-count>0</span><small>/<span data-pay-total-count>0</span></small></div>
+        </div>
+      </div>
+      <div class="pay-bar"><div class="pay-bar-fill" data-pay-bar style="width:0%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-author">
+        <div class="logo-mark">АК</div>
+        <div>
+          <strong>Андрій Красік</strong><br>
+          <span>Маркетинг-аналітик · Київ</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="./">← Повернутись до аудиту</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="admin-panel">
+  <h4>Адмін-режим</h4>
+  <p id="admin-status">Зміни ще не збережено.</p>
+  <button class="admin-btn" onclick="saveData()">💾 Зберегти у репозиторій</button>
+  <button class="admin-btn ghost" onclick="resetPat()" style="margin-top:8px;font-size:11px;padding:6px">Скинути токен</button>
+</div>
+
+<script>
+const REPO = 'krasprod/oksana-audit';
+const DATA_PATH = 'data.json';
+const ADMIN_KEY_PARAM = 'oksana2026';
+
+let state = { data: null, dirty: false, sha: null, admin: false, lastNotifiedStatus: null };
+
+// Init
+async function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  state.admin = urlParams.get('admin') === ADMIN_KEY_PARAM;
+  if (state.admin) {
+    document.body.classList.add('admin');
+    document.getElementById('admin-panel').classList.add('visible');
+  }
+  await loadData();
+  state.lastNotifiedStatus = state.data?.current_status || '';
+  render();
+  if (state.admin) bindEdits();
+}
+
+async function loadData() {
+  try {
+    // Fetch raw file via GitHub API to always get latest (avoid CDN cache)
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?t=${Date.now()}`);
+    const j = await r.json();
+    state.data = JSON.parse(decodeURIComponent(escape(atob(j.content))));
+    state.sha = j.sha;
+  } catch (e) {
+    // Fallback to relative file
+    const r = await fetch(`./${DATA_PATH}?t=${Date.now()}`);
+    state.data = await r.json();
+  }
+}
+
+function render() {
+  const d = state.data;
+
+  // Bind simple fields
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const path = el.dataset.bind;
+    el.textContent = getPath(d, path) ?? '—';
+  });
+  document.querySelectorAll('[data-bind-date]').forEach(el => {
+    const path = el.dataset.bindDate;
+    const v = getPath(d, path);
+    el.textContent = v ? formatDate(v) : '—';
+  });
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    const path = el.dataset.edit;
+    el.textContent = getPath(d, path) ?? '';
+  });
+
+  // Overall progress
+  const all = d.phases.flatMap(p => p.tasks);
+  const done = all.filter(t => t.done).length;
+  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+  document.querySelector('[data-progress-percent]').textContent = pct;
+  document.querySelector('[data-progress-bar]').style.width = pct + '%';
+  document.querySelector('[data-total-tasks]').textContent = `${done}/${all.length}`;
+
+  // Payment summary
+  const totalPrice = d.phases.reduce((s, p) => s + (Number(p.price) || 0), 0);
+  const paidPhases = d.phases.filter(p => p.paid);
+  const paidSum = paidPhases.reduce((s, p) => s + (Number(p.paid_amount || p.price) || 0), 0);
+  const leftSum = Math.max(0, totalPrice - paidSum);
+  const payPct = totalPrice ? Math.round(paidSum / totalPrice * 100) : 0;
+  const pts = s => s.toLocaleString('uk-UA').replace(/,/g,' ');
+  document.querySelector('[data-pay-total]').textContent = pts(totalPrice);
+  document.querySelector('[data-pay-paid]').textContent = pts(paidSum);
+  document.querySelector('[data-pay-left]').textContent = pts(leftSum);
+  document.querySelector('[data-pay-count]').textContent = paidPhases.length;
+  document.querySelector('[data-pay-total-count]').textContent = d.phases.length;
+  document.querySelector('[data-pay-bar]').style.width = payPct + '%';
+
+  // Phases
+  const phasesEl = document.getElementById('phases-list');
+  phasesEl.innerHTML = '';
+  d.phases.forEach((phase, idx) => {
+    const doneCount = phase.tasks.filter(t => t.done).length;
+    const allCount = phase.tasks.length;
+    const phaseDone = doneCount === allCount && allCount > 0;
+    const phaseActive = !phaseDone && doneCount > 0;
+    const el = document.createElement('div');
+    el.className = 'phase' + (phaseDone ? ' done' : '') + (phaseActive ? ' active' : '') + (idx === 0 || phaseActive ? ' open' : '');
+    el.innerHTML = `
+      <div class="phase-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="phase-head-left">
+          <div class="phase-num">${phaseDone ? '✓' : phase.id}</div>
+          <div class="phase-title">
+            <h3>${phase.title}</h3>
+            <div class="meta">
+              <span class="priority-pill ${phase.priority}">${priorityLabel(phase.priority)}</span>
+              <span>${doneCount} з ${allCount} задач</span>
+              ${phase.price ? `<span class="price-chip ${phase.paid ? 'paid' : 'unpaid'}">${phase.paid ? 'Оплачено' : fmtMoney(phase.price)}</span>` : ''}
+            </div>
+          </div>
+        </div>
+        <div class="phase-head-right">
+          <div class="phase-progress-small">${Math.round(doneCount/allCount*100) || 0}%</div>
+          <div class="phase-toggle">▼</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-desc" data-edit="phases.${idx}.description">${phase.description || ''}</div>
+        ${renderPayBlock(phase, idx)}
+        ${renderRequests(phase, idx)}
+        <ul class="tasks">
+          ${phase.tasks.map((t, ti) => `
+            <li class="task ${t.done ? 'done' : ''}" data-phase="${idx}" data-task="${ti}">
+              <div class="check" onclick="${state.admin ? `event.stopPropagation();toggleTask(${idx},${ti})` : ''}"></div>
+              <div class="task-text" data-edit="phases.${idx}.tasks.${ti}.title">${t.title}</div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `;
+    phasesEl.appendChild(el);
+  });
+
+  // Metrics
+  const metricsEl = document.getElementById('metrics-list');
+  metricsEl.innerHTML = '';
+  d.metrics.forEach((m, idx) => {
+    const change = computeChange(m.start, m.current);
+    const goalPct = computeGoalPercent(m.start, m.current, m.goal);
+    metricsEl.innerHTML += `
+      <div class="metric">
+        <div class="metric-label" data-edit="metrics.${idx}.label">${m.label}</div>
+        <div class="metric-values">
+          <div class="metric-current" data-edit="metrics.${idx}.current">${m.current}</div>
+          <div class="metric-change ${change.neutral ? 'neutral' : ''}">${change.text}</div>
+        </div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:${goalPct}%"></div></div>
+        <div class="metric-goal">
+          <span>Старт: <span data-edit="metrics.${idx}.start">${m.start}</span></span>
+          <span>Ціль: <span data-edit="metrics.${idx}.goal">${m.goal}</span></span>
+        </div>
+      </div>
+    `;
+  });
+
+  // Timeline
+  const tlEl = document.getElementById('timeline');
+  tlEl.innerHTML = '';
+  const sorted = [...d.events].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
+  sorted.forEach((ev, idx) => {
+    const origIdx = d.events.indexOf(ev);
+    tlEl.innerHTML += `
+      <div class="event ${ev.type === 'milestone' ? 'milestone' : ''}">
+        <div class="event-date">${formatDateLong(ev.date)}${ev.time ? ' · ' + ev.time : ''}${state.admin ? ` <button onclick="deleteEvent(${origIdx})" style="background:none;border:0;color:var(--red);cursor:pointer;font-size:11px;margin-left:8px">× видалити</button>` : ''}</div>
+        <div class="event-text" data-edit="events.${origIdx}.text">${ev.text}</div>
+      </div>
+    `;
+  });
+
+  if (state.admin) bindEdits();
+}
+
+function bindEdits() {
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    if (el.dataset.bound) return;
+    el.dataset.bound = '1';
+    el.contentEditable = 'true';
+    el.addEventListener('blur', () => {
+      const path = el.dataset.edit;
+      const newVal = el.textContent.trim();
+      setPath(state.data, path, newVal);
+      markDirty();
+      if (path === 'current_status' && newVal && newVal !== state.lastNotifiedStatus) {
+        notifyTelegram(
+          `📍 <b>Оновлення статусу проєкту</b>\n\n` +
+          `<b>Проєкт:</b> ${state.data.project.name}\n\n` +
+          newVal
+        );
+        state.lastNotifiedStatus = newVal;
+      }
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        el.blur();
+      }
+    });
+  });
+}
+
+function toggleTask(phaseIdx, taskIdx) {
+  const phase = state.data.phases[phaseIdx];
+  const task = phase.tasks[taskIdx];
+  const wasPhaseComplete = phase.tasks.every(t => t.done);
+  task.done = !task.done;
+  const isPhaseComplete = phase.tasks.every(t => t.done);
+  if (!wasPhaseComplete && isPhaseComplete) {
+    notifyTelegram(
+      `✅ <b>Етап завершено</b>\n\n` +
+      `<b>Проєкт:</b> ${state.data.project.name}\n` +
+      `<b>Етап:</b> ${phase.title}\n` +
+      `<b>Задач виконано:</b> ${phase.tasks.length}/${phase.tasks.length}`
+    );
+  }
+  markDirty();
+  render();
+}
+
+function renderPayBlock(phase, idx) {
+  if (!phase.price && !state.admin) return '';
+  const price = Number(phase.price) || 0;
+  const paid = !!phase.paid;
+  return `
+    <div class="pay-block ${paid ? 'paid' : ''}">
+      <div class="pay-block-left">
+        <div class="pay-block-label">${paid ? 'Етап оплачено' : 'Для запуску цього етапу'}</div>
+        <div class="pay-block-price"><span data-edit="phases.${idx}.price">${price}</span><small data-currency>грн</small></div>
+        <div class="pay-block-note" data-edit="phases.${idx}.price_note">${phase.price_note || ''}</div>
+        ${paid && phase.paid_date ? `<div class="paid-mark" style="margin-top:8px">✓ Оплачено ${formatDateLong(phase.paid_date)}</div>` : ''}
+      </div>
+      ${state.admin ? `
+        <div class="pay-block-right">
+          <button class="btn-pay-admin toggle" onclick="togglePaid(${idx})">${paid ? '↺ Позначити неоплаченим' : '✓ Позначити оплаченим'}</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function togglePaid(idx) {
+  const phase = state.data.phases[idx];
+  phase.paid = !phase.paid;
+  if (phase.paid) {
+    phase.paid_date = new Date().toISOString().slice(0,10);
+    phase.paid_amount = Number(phase.price) || 0;
+    notifyTelegram(
+      `💰 <b>Етап оплачено</b>\n\n` +
+      `<b>Проєкт:</b> ${state.data.project.name}\n` +
+      `<b>Етап:</b> ${phase.title}\n` +
+      `<b>Сума:</b> ${fmtMoney(phase.paid_amount)}`
+    );
+  } else {
+    phase.paid_date = '';
+    phase.paid_amount = 0;
+  }
+  markDirty();
+  render();
+}
+
+function fmtMoney(n) {
+  const num = Number(n) || 0;
+  return num.toLocaleString('uk-UA').replace(/,/g, ' ') + ' грн';
+}
+
+function renderRequests(phase, idx) {
+  const reqs = phase.client_requests || [];
+  if (!reqs.length && !state.admin) return '';
+  const cards = reqs.map((r, ri) => {
+    const statusLabel = { pending: 'Очікуємо', received: 'Отримано', done: 'Готово' }[r.status] || 'Очікуємо';
+    const hasResponse = r.response && r.response.trim();
+    const phaseTitle = phase.title.replace(/"/g, '&quot;');
+    const reqTitle = r.title.replace(/"/g, '&quot;');
+    const projectName = (state.data.project.name || '').replace(/"/g, '&quot;');
+    const tgMsg = encodeURIComponent(`Відповідь на запит «${r.title}» (етап: ${phase.title}, проєкт: ${state.data.project.name}):\n\n`);
+    const tgUrl = `${state.data.contact?.telegram || 'https://t.me/andreykrasik'}?text=${tgMsg}`;
+    return `
+      <div class="request-card" data-req="${idx}.${ri}">
+        <div class="request-head">
+          <div class="request-title" data-edit="phases.${idx}.client_requests.${ri}.title">${r.title}</div>
+          <span class="status-pill ${r.status || 'pending'}" ${state.admin ? `onclick="cycleStatus(${idx},${ri})"` : ''} title="${state.admin ? 'Клік — змінити статус' : ''}">${statusLabel}</span>
+        </div>
+        <div class="request-desc" data-edit="phases.${idx}.client_requests.${ri}.description">${r.description}</div>
+        ${hasResponse ? `
+          <div class="request-response">
+            <div class="response-label">✓ Відповідь отримано${r.response_date ? ' · ' + formatDateLong(r.response_date) : ''}</div>
+            <div class="response-text" data-edit="phases.${idx}.client_requests.${ri}.response">${r.response}</div>
+          </div>
+        ` : ''}
+        ${!state.admin && r.status === 'pending' ? `
+          <div class="request-form" data-form="${idx}.${ri}">
+            <textarea id="req-text-${idx}-${ri}" placeholder="Напишіть відповідь, дані або коментар..."></textarea>
+            <div class="request-actions">
+              <button class="btn-send" onclick="sendRequestResponse(${idx},${ri})">📩 Надіслати відповідь</button>
+            </div>
+          </div>
+        ` : ''}
+        ${state.admin ? `
+          <div class="admin-request-edit">
+            <label>Відповідь клієнта (видима на сторінці після збереження)</label>
+            <textarea data-edit="phases.${idx}.client_requests.${ri}.response" placeholder="Вставте сюди те, що надіслав клієнт...">${r.response || ''}</textarea>
+            <div class="admin-request-row">
+              <button onclick="cycleStatus(${idx},${ri})">Статус: ${statusLabel} →</button>
+              <button onclick="markResponseDate(${idx},${ri})">Поставити дату відповіді</button>
+              <button class="del" onclick="deleteRequest(${idx},${ri})">× Видалити запит</button>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="requests-block">
+      <div class="requests-title">Що потрібно від вас для цього етапу</div>
+      ${cards}
+      ${state.admin ? `<button class="add-request-btn" onclick="addRequest(${idx})">+ Додати запит для цього етапу</button>` : ''}
+    </div>
+  `;
+}
+
+async function notifyTelegram(text) {
+  const n = state.data.notifications || {};
+  const token = n.telegram_bot_token;
+  const chatId = n.telegram_chat_id;
+  if (!token || !chatId) return;
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+    });
+  } catch (e) {
+    console.warn('Telegram notify failed:', e);
+  }
+}
+
+async function sendRequestResponse(phaseIdx, reqIdx) {
+  const textarea = document.getElementById(`req-text-${phaseIdx}-${reqIdx}`);
+  const text = textarea.value.trim();
+  if (!text) { alert('Напишіть відповідь перед відправкою'); return; }
+  const phase = state.data.phases[phaseIdx];
+  const req = phase.client_requests[reqIdx];
+  const btn = textarea.parentElement.querySelector('.btn-send');
+  btn.disabled = true;
+  btn.textContent = 'Надсилаємо...';
+
+  const email = state.data.contact?.formsubmit || state.data.contact?.email || 'krasprod.nk@gmail.com';
+  const payload = {
+    _subject: `[${state.data.project.name}] Відповідь на запит: ${req.title}`,
+    _template: 'table',
+    'Проєкт': state.data.project.name,
+    'Клієнт': state.data.project.client,
+    'Етап': phase.title,
+    'Запит': req.title,
+    'ID запиту': req.id,
+    'Відповідь клієнта': text,
+    'Дата': new Date().toISOString()
+  };
+
+  try {
+    const r = await fetch(`https://formsubmit.co/ajax/${email}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!r.ok) throw new Error('Сервіс відправки недоступний');
+    const form = textarea.parentElement;
+    form.innerHTML = '<div class="request-sent">✓ Відповідь надіслано. Дякуємо! Андрій отримав її і незабаром оновить статус запиту.</div>';
+    notifyTelegram(
+      `📩 <b>Нова відповідь від клієнта</b>\n\n` +
+      `<b>Проєкт:</b> ${state.data.project.name}\n` +
+      `<b>Клієнт:</b> ${state.data.project.client}\n` +
+      `<b>Етап:</b> ${phase.title}\n` +
+      `<b>Запит:</b> ${req.title}\n\n` +
+      `<b>Відповідь:</b>\n${text}`
+    );
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '📩 Надіслати відповідь';
+    alert('Не вдалось надіслати: ' + e.message + '\n\nСпробуйте через Telegram-кнопку поруч.');
+  }
+}
+
+function cycleStatus(phaseIdx, reqIdx) {
+  const req = state.data.phases[phaseIdx].client_requests[reqIdx];
+  const next = { pending: 'received', received: 'done', done: 'pending' };
+  req.status = next[req.status || 'pending'];
+  if (req.status === 'received' && !req.response_date) req.response_date = new Date().toISOString().slice(0,10);
+  markDirty();
+  render();
+}
+
+function markResponseDate(phaseIdx, reqIdx) {
+  state.data.phases[phaseIdx].client_requests[reqIdx].response_date = new Date().toISOString().slice(0,10);
+  markDirty();
+  render();
+}
+
+function addRequest(phaseIdx) {
+  const phase = state.data.phases[phaseIdx];
+  if (!phase.client_requests) phase.client_requests = [];
+  const newId = `${phase.id}.${String.fromCharCode(97 + phase.client_requests.length)}`;
+  phase.client_requests.push({
+    id: newId,
+    title: 'Новий запит',
+    description: 'Опис запиту...',
+    status: 'pending',
+    response: '',
+    response_date: ''
+  });
+  markDirty();
+  render();
+}
+
+function deleteRequest(phaseIdx, reqIdx) {
+  if (!confirm('Видалити цей запит?')) return;
+  state.data.phases[phaseIdx].client_requests.splice(reqIdx, 1);
+  markDirty();
+  render();
+}
+
+function addEvent() {
+  const date = document.getElementById('new-event-date').value.trim() || new Date().toISOString().slice(0,10);
+  const time = document.getElementById('new-event-time').value.trim();
+  const text = document.getElementById('new-event-text').value.trim();
+  const milestone = document.getElementById('new-event-milestone').checked;
+  if (!text) { alert('Напиши текст події'); return; }
+  state.data.events.push({ date, time, text, type: milestone ? 'milestone' : 'progress' });
+  document.getElementById('new-event-text').value = '';
+  document.getElementById('new-event-time').value = '';
+  document.getElementById('new-event-milestone').checked = false;
+  markDirty();
+  render();
+}
+
+function deleteEvent(idx) {
+  if (!confirm('Видалити цю подію?')) return;
+  state.data.events.splice(idx, 1);
+  markDirty();
+  render();
+}
+
+function markDirty() {
+  state.dirty = true;
+  state.data.project.last_updated = new Date().toISOString();
+  document.getElementById('admin-status').innerHTML = '<span class="admin-unsaved">НЕ ЗБЕРЕЖЕНО</span>';
+}
+
+async function saveData() {
+  let pat = localStorage.getItem('gh_pat');
+  if (!pat) {
+    pat = prompt('Введи GitHub Personal Access Token (з правом Contents: Write на репо oksana-audit).\n\nСтворити: https://github.com/settings/tokens\n\nТокен зберігається лише у цьому браузері.');
+    if (!pat) return;
+    localStorage.setItem('gh_pat', pat);
+  }
+
+  document.getElementById('admin-status').textContent = 'Зберігаємо...';
+
+  try {
+    const content = JSON.stringify(state.data, null, 2);
+    const b64 = btoa(unescape(encodeURIComponent(content)));
+
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${pat}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'Update project progress',
+        content: b64,
+        sha: state.sha
+      })
+    });
+
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.message || 'Unknown error');
+    }
+
+    const j = await r.json();
+    state.sha = j.content.sha;
+    state.dirty = false;
+    document.getElementById('admin-status').innerHTML = '✓ Збережено. GitHub Pages оновиться за ~1 хв.';
+    setTimeout(() => {
+      if (!state.dirty) document.getElementById('admin-status').textContent = 'Зміни ще не збережено.';
+    }, 5000);
+  } catch (e) {
+    document.getElementById('admin-status').textContent = '❌ Помилка: ' + e.message;
+    if (e.message.includes('401') || e.message.includes('Bad credentials')) {
+      localStorage.removeItem('gh_pat');
+    }
+  }
+}
+
+function resetPat() {
+  localStorage.removeItem('gh_pat');
+  alert('Токен видалено. При наступному збереженні запитає знову.');
+}
+
+// Helpers
+function getPath(obj, path) {
+  return path.split('.').reduce((o, k) => o?.[k], obj);
+}
+function setPath(obj, path, val) {
+  const keys = path.split('.');
+  const last = keys.pop();
+  const target = keys.reduce((o, k) => o[k], obj);
+  target[last] = val;
+}
+function priorityLabel(p) {
+  return { critical: 'Критичний', high: 'Високий', medium: 'Середній' }[p] || p;
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('uk-UA', { day: '2-digit', month: 'short' });
+}
+function formatDateLong(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long' });
+}
+function computeChange(start, current) {
+  const s = parseFloat(String(start).replace(/[^\d.-]/g, ''));
+  const c = parseFloat(String(current).replace(/[^\d.-]/g, ''));
+  if (isNaN(s) || isNaN(c) || s === c) return { text: '— без змін', neutral: true };
+  const diff = c - s;
+  const sign = diff > 0 ? '+' : '';
+  return { text: `${sign}${diff.toFixed(diff % 1 ? 1 : 0)}`, neutral: false };
+}
+function computeGoalPercent(start, current, goal) {
+  const s = parseFloat(String(start).replace(/[^\d.-]/g, ''));
+  const c = parseFloat(String(current).replace(/[^\d.-]/g, ''));
+  const g = parseFloat(String(goal).replace(/[^\d.-]/g, ''));
+  if (isNaN(s) || isNaN(c) || isNaN(g) || s === g) return 0;
+  const pct = Math.max(0, Math.min(100, ((c - s) / (g - s)) * 100));
+  return pct;
+}
+
+init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Аудит — Оксана Запорожець · Андрій Красік</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --plum: #2B1F3A;
+  --plum-2: #3A2C4E;
+  --ink: #1A1425;
+  --muted: #6B6074;
+  --line: #EDE6F0;
+  --bg: #FAF6F2;
+  --white: #FFFFFF;
+  --terra: #D4968B;
+  --terra-2: #E8B7AD;
+  --lav: #B9A4D6;
+  --mint: #9BC9B8;
+  --gold: #E2B87C;
+  --rose: #E59CAF;
+  --radius: 22px;
+  --radius-sm: 14px;
+  --shadow-sm: 0 2px 12px rgba(43,31,58,0.06);
+  --shadow-md: 0 14px 44px rgba(43,31,58,0.10);
+  --shadow-lg: 0 32px 88px rgba(43,31,58,0.20);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.08; }
+h2 { font-size: clamp(26px, 3.5vw, 40px); line-height: 1.15; }
+h3 { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.25; }
+p { color: var(--muted); }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.eyebrow {
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--terra);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: ''; width: 32px; height: 2px; background: var(--terra); border-radius: 2px;
+}
+.eyebrow.light { color: var(--terra-2); }
+.eyebrow.light::before { background: var(--terra-2); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 24px; border-radius: 999px;
+  font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 15px;
+  border: none; cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--terra); color: var(--white); box-shadow: var(--shadow-sm); }
+.btn-primary:hover { background: #C7847A; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--plum); }
+.btn-dark { background: var(--plum); color: var(--white); }
+.btn-dark:hover { background: var(--plum-2); }
+
+/* Navigation */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(250, 246, 242, 0.82);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; max-width: 1180px; margin: 0 auto;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px;
+}
+.logo-mark {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--terra) 0%, var(--rose) 100%);
+  display: grid; place-items: center;
+  color: white; font-weight: 800; font-size: 15px;
+  box-shadow: var(--shadow-sm);
+}
+.nav-links {
+  display: flex; gap: 28px;
+  font-size: 14px; color: var(--muted);
+}
+.nav-links a { transition: color 0.15s; }
+.nav-links a:hover { color: var(--plum); }
+
+/* Hero */
+.hero {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(212,150,139,0.18), transparent 55%),
+    radial-gradient(circle at 88% 82%, rgba(185,164,214,0.18), transparent 55%),
+    linear-gradient(180deg, var(--plum) 0%, var(--plum-2) 100%);
+  color: white;
+  padding: 80px 0 90px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid; grid-template-columns: 1.12fr 1fr; gap: 64px;
+  align-items: center;
+  position: relative; z-index: 1;
+}
+.hero h1 { color: white; margin: 16px 0 22px; }
+.hero h1 .hl { color: var(--terra-2); }
+.hero .lead { color: rgba(255,255,255,0.78); font-size: 19px; max-width: 520px; margin-bottom: 32px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 16px; border-radius: 999px;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(8px);
+  font-size: 13px; font-family: 'Manrope', sans-serif; font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--terra-2); box-shadow: 0 0 0 4px rgba(232,183,173,0.25); }
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 44px; padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.hero-stat-num {
+  font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px;
+  color: var(--terra-2); letter-spacing: -0.02em;
+}
+.hero-stat-lbl { color: rgba(255,255,255,0.62); font-size: 13px; margin-top: 4px; }
+
+/* Hero mock - Telegram message visualization */
+.mock {
+  background: white; color: var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 22px 20px;
+  transform: rotate(0.4deg);
+  position: relative;
+  max-width: 440px;
+  margin-left: auto;
+}
+.mock::before {
+  content: '';
+  position: absolute; inset: -10px;
+  background: linear-gradient(135deg, rgba(212,150,139,0.2), rgba(185,164,214,0.2));
+  filter: blur(24px); z-index: -1;
+  border-radius: var(--radius);
+}
+.mock-head {
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 14px;
+}
+.mock-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--terra), var(--lav));
+  display: grid; place-items: center;
+  color: white; font-weight: 700; font-size: 15px;
+}
+.mock-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; }
+.mock-sub { font-size: 12px; color: var(--muted); }
+.bubble {
+  font-size: 14px; line-height: 1.5;
+  padding: 11px 14px; border-radius: 14px;
+  margin-bottom: 10px; max-width: 92%;
+}
+.bubble.bot { background: #F3EEE8; color: var(--ink); }
+.bubble.user { background: var(--terra); color: white; margin-left: auto; }
+.bubble .gem { color: var(--terra); }
+.bubble.user .gem { color: white; }
+.mock-findings {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+}
+.chip {
+  padding: 5px 10px; border-radius: 8px;
+  background: rgba(185,164,214,0.18); color: var(--plum);
+  font-size: 12px; font-family: 'Manrope', sans-serif; font-weight: 500;
+}
+
+/* Sections */
+section { padding: 96px 0; position: relative; }
+.section-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+.section-head .eyebrow { justify-content: center; }
+.section-head p { font-size: 17px; margin-top: 14px; }
+
+/* Insights cards — "Що я вивчив" */
+.insights {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.card-insight {
+  background: white; border-radius: var(--radius);
+  padding: 30px 26px; box-shadow: var(--shadow-sm);
+  border: 1px solid var(--line);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-insight:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.card-insight .num {
+  font-family: 'Manrope', sans-serif; font-weight: 800;
+  font-size: 48px; line-height: 1;
+  background: linear-gradient(135deg, var(--terra), var(--lav));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin-bottom: 14px; letter-spacing: -0.03em;
+}
+.card-insight .lbl { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+.card-insight .sub { font-size: 13px; color: var(--muted); }
+
+/* Findings — "Що я знайшов" */
+.findings-section {
+  background: linear-gradient(180deg, var(--bg) 0%, #F0E9E3 100%);
+}
+.findings {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+.finding {
+  background: white; border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--terra);
+  position: relative;
+}
+.finding.critical { border-left-color: #D4695F; }
+.finding.opportunity { border-left-color: var(--mint); }
+.finding-head {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.finding-badge {
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; font-family: 'Manrope', sans-serif; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.finding.critical .finding-badge { background: #FCE4E1; color: #A83E33; }
+.finding .finding-badge { background: #F5E3D9; color: #8B4A3E; }
+.finding.opportunity .finding-badge { background: #DDF0E8; color: #2D7A5E; }
+.finding h3 { font-size: 20px; margin-bottom: 10px; }
+.finding p { font-size: 14.5px; line-height: 1.6; }
+.finding .quote {
+  margin-top: 14px; padding: 12px 16px;
+  background: #FAF6F2; border-radius: 10px;
+  font-size: 13px; color: var(--plum-2);
+  font-style: italic;
+  border-left: 2px solid var(--lav);
+}
+
+/* Channels comparison */
+.channels-section { background: white; }
+.channels-table {
+  background: white; border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.channels-row {
+  display: grid; grid-template-columns: 180px 1fr 200px;
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  gap: 20px;
+}
+.channels-row:last-child { border-bottom: none; }
+.channels-row.head {
+  background: var(--plum); color: white;
+  font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.channels-row.head p { color: rgba(255,255,255,0.7); }
+.channel-name { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; }
+.channel-name .handle { color: var(--muted); font-weight: 400; font-size: 12px; display: block; margin-top: 3px; }
+.channel-msg { font-size: 14px; color: var(--ink); }
+.channel-status {
+  font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 13px;
+  padding: 6px 12px; border-radius: 8px;
+  display: inline-block;
+}
+.status-error { background: #FCE4E1; color: #A83E33; }
+.status-warn { background: #FDF1DC; color: #8B6F2A; }
+.status-ok { background: #DDF0E8; color: #2D7A5E; }
+
+/* Value rows (products / assets) */
+.assets-section { background: var(--bg); }
+.assets {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.asset {
+  background: white; border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-sm);
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.asset-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--terra), var(--rose));
+  color: white; font-size: 24px;
+}
+.asset.v2 .asset-icon { background: linear-gradient(135deg, var(--lav), var(--plum-2)); }
+.asset.v3 .asset-icon { background: linear-gradient(135deg, var(--mint), #7BB09F); }
+.asset.v4 .asset-icon { background: linear-gradient(135deg, var(--gold), #C99A54); }
+.asset h3 { font-size: 18px; margin-bottom: 6px; }
+.asset p { font-size: 14px; line-height: 1.55; }
+.asset .stat {
+  font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--terra);
+  margin-top: 8px; font-size: 14px;
+}
+
+/* Products table */
+.products-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-top: 32px;
+}
+.product {
+  background: white; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 18px 18px;
+  transition: all 0.2s;
+}
+.product:hover { border-color: var(--terra); transform: translateY(-2px); }
+.product-name { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.product-price {
+  font-family: 'Manrope', sans-serif; font-weight: 800;
+  font-size: 20px; color: var(--terra);
+  letter-spacing: -0.01em;
+}
+.product-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* Plan timeline */
+.plan-section { background: white; padding: 110px 0; }
+.plan-weeks {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  position: relative;
+}
+.plan-weeks::before {
+  content: '';
+  position: absolute;
+  top: 44px; left: 6%; right: 6%; height: 2px;
+  background: linear-gradient(90deg, var(--terra), var(--lav), var(--mint), var(--gold));
+  opacity: 0.3;
+  z-index: 0;
+}
+.week {
+  background: white; border-radius: var(--radius);
+  padding: 26px 22px;
+  border: 1px solid var(--line);
+  position: relative; z-index: 1;
+}
+.week-num {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: white; border: 2px solid var(--terra);
+  color: var(--terra);
+  font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px;
+  margin-bottom: 18px;
+}
+.week:nth-child(2) .week-num { border-color: var(--lav); color: var(--lav); }
+.week:nth-child(3) .week-num { border-color: var(--mint); color: #5B9E87; }
+.week:nth-child(4) .week-num { border-color: var(--gold); color: #B28040; }
+.week h4 { font-size: 17px; font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 10px; }
+.week ul { list-style: none; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.week ul li { padding-left: 18px; position: relative; margin-bottom: 6px; }
+.week ul li::before { content: '→'; position: absolute; left: 0; color: var(--terra); font-weight: bold; }
+.week:nth-child(2) ul li::before { color: var(--lav); }
+.week:nth-child(3) ul li::before { color: #5B9E87; }
+.week:nth-child(4) ul li::before { color: #B28040; }
+
+/* Budget breakdown */
+.budget-card {
+  background: linear-gradient(135deg, var(--plum) 0%, var(--plum-2) 100%);
+  border-radius: var(--radius);
+  padding: 44px;
+  color: white;
+  margin-top: 40px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  position: relative;
+}
+.budget-card::before {
+  content: '';
+  position: absolute; top: -40%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(212,150,139,0.25), transparent 60%);
+  pointer-events: none;
+}
+.budget-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  position: relative; z-index: 1;
+}
+.budget-card h3 { color: white; margin-bottom: 20px; font-size: 26px; }
+.budget-items {
+  list-style: none;
+  margin-bottom: 20px;
+}
+.budget-items li {
+  display: flex; justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.88);
+  font-size: 15px;
+}
+.budget-items li span:last-child { font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--terra-2); }
+.budget-total {
+  display: flex; justify-content: space-between;
+  padding: 18px 0;
+  font-family: 'Manrope', sans-serif; font-weight: 800;
+  font-size: 22px;
+  margin-top: 8px;
+  border-top: 2px solid rgba(255,255,255,0.3);
+  color: white;
+}
+.budget-total span:last-child { color: var(--terra-2); }
+.budget-right { padding: 24px; background: rgba(255,255,255,0.06); border-radius: var(--radius-sm); backdrop-filter: blur(8px); }
+.budget-right h4 { color: var(--terra-2); font-family: 'Manrope', sans-serif; font-weight: 700; margin-bottom: 14px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.06em; }
+.forecast {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.forecast-item {
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+.forecast-num {
+  font-family: 'Manrope', sans-serif; font-weight: 800;
+  font-size: 22px; color: var(--terra-2);
+}
+.forecast-lbl { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+/* Services offered */
+.services-section { background: linear-gradient(180deg, var(--bg) 0%, #F0E9E3 100%); }
+.services {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.service {
+  background: white; border-radius: var(--radius);
+  padding: 32px; box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+  border: 1px solid var(--line);
+}
+.service:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--terra-2); }
+.service-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(212,150,139,0.14);
+  display: grid; place-items: center;
+  font-size: 22px; margin-bottom: 16px;
+}
+.service h3 { font-size: 17px; margin-bottom: 10px; }
+.service p { font-size: 14px; line-height: 1.6; }
+.service ul {
+  list-style: none; font-size: 13px; color: var(--muted);
+  margin-top: 14px;
+}
+.service ul li {
+  padding: 4px 0 4px 18px; position: relative;
+}
+.service ul li::before {
+  content: '✓'; position: absolute; left: 0; color: var(--terra); font-weight: bold;
+}
+
+/* CTA */
+.cta-section {
+  background: var(--plum);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(212,150,139,0.18), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(185,164,214,0.18), transparent 55%);
+  pointer-events: none;
+}
+.cta-inner {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 60px; align-items: center;
+  position: relative; z-index: 1;
+}
+.cta-section h2 { color: white; margin-bottom: 20px; }
+.cta-section p { color: rgba(255,255,255,0.8); font-size: 17px; margin-bottom: 28px; }
+.contact-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+.contact-card .name { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 20px; margin-bottom: 4px; }
+.contact-card .role { color: var(--terra-2); font-size: 13px; margin-bottom: 20px; letter-spacing: 0.04em; }
+.contact-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; font-size: 14px;
+  color: rgba(255,255,255,0.82);
+}
+.contact-item .ico {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  display: grid; place-items: center;
+  font-size: 14px;
+}
+
+/* Footer */
+.footer {
+  background: var(--ink); color: rgba(255,255,255,0.55);
+  padding: 32px 0; text-align: center;
+  font-size: 13px;
+}
+
+/* Reveal animation */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Highlight quote callout */
+.pullquote {
+  margin: 60px auto; max-width: 880px;
+  text-align: center;
+  font-family: 'Manrope', sans-serif; font-weight: 600;
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.4;
+  color: var(--plum);
+  letter-spacing: -0.01em;
+  padding: 0 24px;
+}
+.pullquote::before, .pullquote::after {
+  content: '';
+  display: block; width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--terra), var(--lav));
+  margin: 24px auto;
+  border-radius: 2px;
+}
+.pullquote .hl { color: var(--terra); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .mock { margin-left: 0; }
+  .insights { grid-template-columns: repeat(2, 1fr); }
+  .findings { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .plan-weeks { grid-template-columns: repeat(2, 1fr); }
+  .plan-weeks::before { display: none; }
+  .budget-grid { grid-template-columns: 1fr; }
+  .services { grid-template-columns: 1fr; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .assets { grid-template-columns: 1fr; }
+  .channels-row { grid-template-columns: 1fr; gap: 10px; padding: 18px; }
+  .channels-row.head { display: none; }
+}
+@media (max-width: 760px) {
+  .nav-links { display: none; }
+  section { padding: 68px 0; }
+  .hero { padding: 56px 0 64px; }
+  .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .hero-stat-num { font-size: 26px; }
+}
+@media (max-width: 540px) {
+  .insights { grid-template-columns: 1fr; }
+  .plan-weeks { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: 1fr; }
+  .forecast { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-mark">AK</div>
+      <span>Андрій Красік · Маркетинг-аудит</span>
+    </div>
+    <div class="nav-links">
+      <a href="#findings">Знахідки</a>
+      <a href="#channels">Канали</a>
+      <a href="#assets">Активи</a>
+      <a href="#plan">План</a>
+      <a href="#budget">Бюджет</a>
+    </div>
+    <a href="#cta" class="btn btn-primary">Обговорити →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="reveal">
+      <div class="tag"><span class="dot"></span>Персональний аудит для Оксани Запорожець · психологиня</div>
+      <h1>Я вивчив <span class="hl">5 ваших каналів</span>, 4.5 роки контенту та 8 продуктів — і знайшов, чому маркетинг не дає клієнток</h1>
+      <p class="lead">Цей документ — підсумок глибокого аудиту вашого позиціонування. Я прочитав 984 ваших Telegram-пости, прослухав 11 голосових повідомлень, вивчив Instagram, TikTok, Facebook, qui.help і склав план на 30 днів, який спирається на те, що у вас уже є — а не на створення з нуля.</p>
+      <div class="hero-cta">
+        <a href="#findings" class="btn btn-primary">Що я знайшов</a>
+        <a href="#plan" class="btn btn-ghost" style="color: white; border-color: rgba(255,255,255,0.3);">План на 30 днів</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">984</div><div class="hero-stat-lbl">ваших постів прочитано</div></div>
+        <div><div class="hero-stat-num">11</div><div class="hero-stat-lbl">голосових розшифровано</div></div>
+        <div><div class="hero-stat-num">5</div><div class="hero-stat-lbl">каналів проаналізовано</div></div>
+      </div>
+    </div>
+    <div class="mock reveal">
+      <div class="mock-head">
+        <div class="mock-avatar">О</div>
+        <div>
+          <div class="mock-title">Оксана Запорожець</div>
+          <div class="mock-sub">Психологиня · травмотерапевтка</div>
+        </div>
+      </div>
+      <div class="bubble bot"><span class="gem">💎</span> Доброго дня! Я психологиня, сертифікована в методі розстановки психічної травми. 4 роки практики, 5 сертифікатів. Працюю онлайн з жінками: проживання втрат, травма, сором, сепарація.</div>
+      <div class="bubble user">А який у вас основний продукт і скільки він коштує?</div>
+      <div class="bubble bot">
+        <strong>Ось що в мене є:</strong><br>
+        • Консультація 1000–1350 грн<br>
+        • Розстановка травми 2000 грн<br>
+        • Онлайн-група «Яка ти є?» 700 грн/зустріч<br>
+        • Гра «Лабіринт Відображень» 1500–2800 грн<br>
+        <span class="gem">💎</span> Пишіть в особисті.
+      </div>
+      <div class="mock-findings">
+        <span class="chip">Ясне позиціонування</span>
+        <span class="chip">Єдина ціна</span>
+        <span class="chip">Один CTA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS: Що я вивчив -->
+<section id="research" class="container">
+  <div class="section-head reveal">
+    <div class="eyebrow">Глибина аудиту</div>
+    <h2>Що я вивчив, перш ніж скласти план</h2>
+    <p>Жоден маркетолог не скаже вам «почніть TikTok» без того, щоб зрозуміти, де ви зараз і що у вас уже є. Я витратив день на вивчення ваших даних — щоб наступні 30 днів не були марними.</p>
+  </div>
+
+  <div class="insights">
+    <div class="card-insight reveal">
+      <div class="num">1 037</div>
+      <div class="lbl">Telegram-повідомлень</div>
+      <div class="sub">Повний експорт групи «Сімейна психологія та Системна терапія» за 4.5 роки. 984 з них написані вами.</div>
+    </div>
+    <div class="card-insight reveal">
+      <div class="num">89</div>
+      <div class="lbl">Instagram-публікацій</div>
+      <div class="sub">Проаналізовано стрічку, актуальне, Reels. Розшифровано жанровий склад — 40% експерт, 30% селфі, 15% хобі, 15% реклама.</div>
+    </div>
+    <div class="card-insight reveal">
+      <div class="num">51</div>
+      <div class="lbl">клінічних лонгрідів</div>
+      <div class="sub">Довгих експертних постів (>1500 знаків) у вашому TG-архіві. Психосоматика, травма, розстановки, кіноаналіз.</div>
+    </div>
+    <div class="card-insight reveal">
+      <div class="num">8</div>
+      <div class="lbl">активних SKU-продуктів</div>
+      <div class="sub">Ви не «психологиня з однією клієнткою». У вас повна лінійка — від 200 грн до 8400 грн за курс. Просто трафіку в неї мало.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pullquote reveal">
+  Ви продаєте <span class="hl">казку</span>, а <span class="hl">вмієте лікувати</span>. Холодний клієнт не бачить вашу справжню експертність — вона захована у приватному Telegram, тоді як у Instagram крутиться реклама води з меланіном.
+</div>
+
+<!-- FINDINGS: Що я знайшов -->
+<section id="findings" class="findings-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Головні знахідки</div>
+      <h2>5 розривів, які вбивають ваш маркетинг</h2>
+      <p>Це не про «ваш контент поганий». Контент у вас сильний. Це про структурні проблеми, які не дають холодному клієнту дійти до оплати.</p>
+    </div>
+
+    <div class="findings">
+      <div class="finding critical reveal">
+        <div class="finding-head">
+          <span class="finding-badge">🚨 Критично</span>
+        </div>
+        <h3>Статус «Психолог не приймає нових клієнтів» на qui.help</h3>
+        <p>Ви зареєстровані в каталозі — це добре. Але профіль прямо говорить холодному відвідувачу: «не приходьте». qui.help не показує вас у пошуку. Це нуль трафіку з найбільш готової-купити аудиторії.</p>
+        <div class="quote">Quick win: змінити статус за 1 хвилину. Каталог одразу починає давати заявки.</div>
+      </div>
+
+      <div class="finding critical reveal">
+        <div class="finding-head">
+          <span class="finding-badge">🚨 Критично</span>
+        </div>
+        <h3>Партнерська реклама води з меланіном у стрічці травмотерапевтки</h3>
+        <p>Серед постів про психосоматику, травму і проживання втрат у стрічці Instagram стоїть рекламний пост води «AquaMelan з меланіном». Для клієнтки з ПТСР, яка шукає спеціаліста — це сигнал «вона продає що завгодно». Довіра падає миттєво.</p>
+        <div class="quote">Рішення: архівувати ці пости в окремий аккаунт або закрити highlight «Хобі».</div>
+      </div>
+
+      <div class="finding reveal">
+        <div class="finding-head">
+          <span class="finding-badge">⚠ Позиціонування</span>
+        </div>
+        <h3>5 різних меседжів на 5 каналах</h3>
+        <p>У вас чотири професійні канали і в кожному ви кажете інше. Холодний клієнт не розуміє, що ви пропонуєте.</p>
+        <div class="quote">В Instagram — «гра для пар». У TikTok — «сімейний психолог». У qui.help — «травма, сором, сепарація». У голосових — «працюю з жінками». У TG — клінічні лонгріди про психосоматику.</div>
+      </div>
+
+      <div class="finding opportunity reveal">
+        <div class="finding-head">
+          <span class="finding-badge">💎 Актив</span>
+        </div>
+        <h3>51 клінічний лонгрід у Telegram — нерозпакований</h3>
+        <p>За 4.5 роки ви написали 51 експертний лонгрід — психосоматика тазового дна, критерії завершення терапії, розстановки внутрішніх частин, авторський психоаналіз фільмів. Це професійний контент рівня B17. Але він лежить у приватному Telegram для 378 людей.</p>
+        <div class="quote">1 лонгрід = 8–12 Instagram-каруселей + 4–6 TikTok-відео. 51 × 10 = 510 одиниць контенту без жодного нового слова.</div>
+      </div>
+
+      <div class="finding reveal">
+        <div class="finding-head">
+          <span class="finding-badge">⚠ Воронка</span>
+        </div>
+        <h3>98% ваших постів нічого не продають</h3>
+        <p>У 984 ваших Telegram-постах слово «грн» згадано 12 разів (1.2%), «запис» — 25 разів (2.5%). «Розстановка» як продукт — 11 разів за 4.5 роки. Ви присутні, ви даєте користь, але систематично не продаєте. Тому база прогрівається, а конверсії в платні продукти не йде.</p>
+        <div class="quote">Рішення: структурований контент-план 70% корисне / 20% історії / 10% продажне — із чіткими CTA і цінами.</div>
+      </div>
+
+      <div class="finding opportunity reveal">
+        <div class="finding-head">
+          <span class="finding-badge">💎 Актив</span>
+        </div>
+        <h3>Рідкісна сертифікація в ніші перенасичення «архетипів»</h3>
+        <p>Український ринок жіночих психологинь насичений «архетипами + Таро + гороскопами». Серед сотень таких фасилітаторок у вас є те, чого немає в них: сертифікація <strong>системного розстановника психічної травми</strong> + навчання в КІГІП. Це дозволяє ставити ціну 2 000 грн за сесію замість 500. Але ця відмінність не озвучена в жодному каналі, крім qui.help.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANNELS -->
+<section id="channels" class="channels-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Розсинхрон каналів</div>
+      <h2>Що говорить кожен ваш канал холодному клієнту</h2>
+      <p>Я зайшов у кожен канал як незнайомець. Ось що я там знайшов.</p>
+    </div>
+
+    <div class="channels-table reveal">
+      <div class="channels-row head">
+        <div>Канал</div>
+        <div>Що говорить клієнту</div>
+        <div>Статус</div>
+      </div>
+      <div class="channels-row">
+        <div class="channel-name">Instagram <span class="handle">@oksanaarhetipmag · 534 фол.</span></div>
+        <div class="channel-msg">«Розстановка травми + гра для пар» + селфі + курс актора дубляжу + реклама води з меланіном</div>
+        <div><span class="channel-status status-warn">Розмито</span></div>
+      </div>
+      <div class="channels-row">
+        <div class="channel-name">TikTok <span class="handle">@oksanakonsultpsihologiy · 976 фол.</span></div>
+        <div class="channel-msg">Bio: «Сімейний психолог». Перші відео — пряма реклама послуг. Алгоритм не просуває — перегляди 170–300</div>
+        <div><span class="channel-status status-error">Мертвий</span></div>
+      </div>
+      <div class="channels-row">
+        <div class="channel-name">qui.help <span class="handle">каталог психологів</span></div>
+        <div class="channel-msg">Статус «не приймає нових клієнтів». Ціна 1350 грн (≠ 1000 грн в Instagram). 0 відгуків</div>
+        <div><span class="channel-status status-error">Блокує трафік</span></div>
+      </div>
+      <div class="channels-row">
+        <div class="channel-name">Telegram <span class="handle">378 учасниць · 4.5 роки</span></div>
+        <div class="channel-msg">Клінічні лонгріди, авторський кіноаналіз, реальні кейси. Контент професійного рівня, але архівований</div>
+        <div><span class="channel-status status-ok">Головний актив</span></div>
+      </div>
+      <div class="channels-row">
+        <div class="channel-name">Facebook <span class="handle">oksana.zaporozec.333729</span></div>
+        <div class="channel-msg">Особистий профіль, не бізнес-сторінка. Використовується для репостів у групи колег</div>
+        <div><span class="channel-status status-warn">Не структурований</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSETS -->
+<section id="assets" class="assets-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Те, що вже працює</div>
+      <h2>Ваші активи, які можна одразу масштабувати</h2>
+      <p>Я не пропоную будувати з нуля. У вас уже є все потрібне — ми просто правильно це покажемо.</p>
+    </div>
+
+    <div class="assets">
+      <div class="asset reveal">
+        <div class="asset-icon">💎</div>
+        <div>
+          <h3>Рідкісна сертифікація</h3>
+          <p>Системний розстановник психічної травми + 4 роки клінічної практики + навчання в КІГІП. У ніші «архетипів» конкурентів з такою експертизою майже немає.</p>
+          <div class="stat">Дозволяє ціну 2000 грн, а не 500</div>
+        </div>
+      </div>
+
+      <div class="asset v2 reveal">
+        <div class="asset-icon">📚</div>
+        <div>
+          <h3>4.5 роки контент-архіву</h3>
+          <p>984 ваших Telegram-повідомлення. 51 клінічний лонгрід. Ваш власний tone of voice, який я вже вивчив і упакував у бриф для AI-ботів і копірайтерів.</p>
+          <div class="stat">Потенціал: 510 одиниць контенту для IG/TikTok</div>
+        </div>
+      </div>
+
+      <div class="asset v3 reveal">
+        <div class="asset-icon">👥</div>
+        <div>
+          <h3>Тепла база 378 учасниць</h3>
+          <p>Приватна Telegram-група — ваш головний актив. В 7 разів більше за TikTok-аудиторію. Ці люди читають вас роками, але їх ніхто не конвертує у платні продукти.</p>
+          <div class="stat">Реактивація 5% = 18 нових клієнток</div>
+        </div>
+      </div>
+
+      <div class="asset v4 reveal">
+        <div class="asset-icon">🛠</div>
+        <div>
+          <h3>8 готових SKU-продуктів</h3>
+          <p>Консультація, розстановка, група «Яка ти є?», «Лабіринт Відображень» індивідуально і для пар, платна група «Енергія достатку», міні-консультації з картами, лід-магніт 200 грн.</p>
+          <div class="stat">Лінійка від 200 до 8400 грн</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products grid -->
+    <h3 style="margin-top: 64px; margin-bottom: 6px; text-align: center;">Повний каталог ваших продуктів</h3>
+    <p style="text-align: center; margin-bottom: 8px;">З вашого TG-архіву і каталогу qui.help</p>
+
+    <div class="products-grid">
+      <div class="product reveal">
+        <div class="product-name">Консультація</div>
+        <div class="product-price">1 000–1 350 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">60 хв · онлайн</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Розстановка травми</div>
+        <div class="product-price">2 000 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">30–60 хв · флагман</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Пакет 10 сесій</div>
+        <div class="product-price">9 000 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">900 грн/сесія</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Група «Яка ти є?»</div>
+        <div class="product-price">700 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн/зустріч</span></div>
+        <div class="product-meta">12 зустрічей · 4–6 уч.</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Лабіринт — індивідуально</div>
+        <div class="product-price">1 500 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">1.5 год · офлайн Київ</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Лабіринт — для пар</div>
+        <div class="product-price">2 800 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">2 год · офлайн Київ</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Група «Енергія достатку»</div>
+        <div class="product-price">платна</div>
+        <div class="product-meta">МАК-карти · онлайн</div>
+      </div>
+      <div class="product reveal">
+        <div class="product-name">Лід-магніт: GPT-список</div>
+        <div class="product-price">200 <span style="font-size: 14px; color: var(--muted); font-weight: 500;">грн</span></div>
+        <div class="product-meta">Low-ticket вхід</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN -->
+<section id="plan" class="plan-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">План на 30 днів</div>
+      <h2>Маленькі перемоги → системний результат</h2>
+      <p>План спирається на те, що у вас уже є. Жодного «знімай 3 відео в день». Ваше навантаження — 7 годин на місяць.</p>
+    </div>
+
+    <div class="plan-weeks">
+      <div class="week reveal">
+        <div class="week-num">1</div>
+        <h4>Фундамент і квік-віни</h4>
+        <ul>
+          <li>Знімаємо статус «не приймаю» на qui.help</li>
+          <li>Просимо 5 відгуків у клієнток</li>
+          <li>Синхронізуємо bio на 4 каналах до одного меседжу</li>
+          <li>Прибираємо рекламу води з IG</li>
+          <li>Збираємо лендинг з цінами і кейсами</li>
+        </ul>
+      </div>
+      <div class="week reveal">
+        <div class="week-num">2</div>
+        <h4>Контент-виробництво</h4>
+        <ul>
+          <li>1 зйомочний день (~4 години вашого часу)</li>
+          <li>Сценарії з ваших TG-лонгрідів — я пишу</li>
+          <li>6–8 вертикальних відео 15–30 сек</li>
+          <li>2 довгих відео 2–3 хв для IG/FB</li>
+          <li>Розписання публікацій на 4 тижні</li>
+        </ul>
+      </div>
+      <div class="week reveal">
+        <div class="week-num">3</div>
+        <h4>Дистрибуція і таргет</h4>
+        <ul>
+          <li>Пости в 3 FB-групах психологів</li>
+          <li>Реактивація старих клієнток через DM</li>
+          <li>Запуск Meta Ads на справжню групу 800 грн</li>
+          <li>Оффер: «Вечірня група по п'ятницях»</li>
+          <li>Подача в реєстр Тараріної</li>
+        </ul>
+      </div>
+      <div class="week reveal">
+        <div class="week-num">4</div>
+        <h4>Замір і масштабування</h4>
+        <ul>
+          <li>Аналіз метрик: CPL, конверсії, ROAS</li>
+          <li>Відключаємо слабкі креативи</li>
+          <li>Підсилюємо те, що спрацювало</li>
+          <li>Готуємо план на місяць 2</li>
+          <li>Кейс першої клієнтки — у FB-групи</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<section id="budget" class="container" style="padding-top: 0;">
+  <div class="section-head reveal">
+    <div class="eyebrow">Економіка співпраці</div>
+    <h2>Прозора структура: моя робота окремо, трафік окремо</h2>
+    <p>Я не включаю рекламний бюджет у свою вартість — це завжди окремо, щоб ви бачили, куди йде кожна гривня.</p>
+  </div>
+
+  <div class="budget-card reveal">
+    <div class="budget-grid">
+      <div>
+        <h3>Моя робота — 4 500 грн/міс</h3>
+        <p style="color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 16px; line-height: 1.55;">Фіксований ретейнер. Що входить:</p>
+        <ul class="budget-items">
+          <li><span>Переупаковка позиціонування</span> <span>✓</span></li>
+          <li><span>Лендинг-одностранічник</span> <span>✓</span></li>
+          <li><span>Сценарії 8–10 відео з ваших лонгрідів</span> <span>✓</span></li>
+          <li><span>Ведення Meta Ads (креативи, аудиторії)</span> <span>✓</span></li>
+          <li><span>Синхронізація каталогів психологів</span> <span>✓</span></li>
+          <li><span>Контент-план IG/TikTok з TG-архіву</span> <span>✓</span></li>
+          <li><span>10–15 шаблонів DM-відповідей у вашому тоні</span> <span>✓</span></li>
+          <li><span>Тижневий звіт + стратегічний зідзвон</span> <span>✓</span></li>
+        </ul>
+        <div class="budget-total">
+          <span>Ретейнер</span>
+          <span>4 500 грн</span>
+        </div>
+        <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 14px; line-height: 1.5; font-style: italic;">Що НЕ входить: зйомка та монтаж відео (ви знімаєте самі на телефон), AI-аватар/клонування голосу, AI-бот для DM (зараз клієнток небагато — ви відповідаєте самі).</p>
+      </div>
+      <div class="budget-right">
+        <h4>Ваші прямі витрати (окремо)</h4>
+        <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 14px; line-height: 1.5;">Оплачуються напряму. Я не беру комісію.</p>
+        <ul class="budget-items" style="margin-bottom: 18px;">
+          <li><span>Хостинг і домен</span> <span>300 грн</span></li>
+          <li><span>Meta Ads (мінімум для тесту)</span> <span>3 000 грн</span></li>
+          <li><span>Резерв (буст постів / мікроблогери)</span> <span>700 грн</span></li>
+        </ul>
+        <div class="budget-total" style="border-top: 2px solid rgba(255,255,255,0.3); padding: 14px 0 0; margin: 0;">
+          <span style="font-size: 16px;">Трафік</span>
+          <span style="font-size: 18px;">~4 000 грн</span>
+        </div>
+        <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 14px; line-height: 1.5; font-style: italic;">Опційно: монтаж відео через мою студію/фрилансера — 200–300 грн за одне відео (якщо не хочете монтувати самі).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top: 28px; padding: 28px 34px; background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); border-left: 4px solid var(--mint); display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center;">
+    <div style="font-size: 34px;">📈</div>
+    <div>
+      <h3 style="font-size: 18px; margin-bottom: 4px;">Прогноз на перший місяць</h3>
+      <p style="font-size: 14px; color: var(--muted);">2–4 заявки з qui.help безкоштовно + 1–2 повернення старих клієнток + 5–10 учасниць групи з Meta Ads (при CPL 150–300 грн). Разом: <strong style="color: var(--terra);">+8–15 тис грн нового припливу</strong>. Це ×2–×3 до поточної бази. Для ×5 потрібно 3–4 місяці.</p>
+    </div>
+    <div style="text-align: right;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 32px; color: var(--terra);">ROI 1.8–3×</div>
+      <div style="font-size: 12px; color: var(--muted);">від загальних інвестицій</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Що я роблю як AI-маркетолог</div>
+      <h2>Що входить у мою роботу з вами</h2>
+      <p>Це не тільки план на місяць. Це повний маркетинг-стек, який працює з вашим ресурсом (1 зйомочний день на місяць) — за рахунок AI і автоматизації.</p>
+    </div>
+
+    <div class="services">
+      <div class="service reveal">
+        <div class="service-icon">✍️</div>
+        <h3>Контент з ваших лонгрідів</h3>
+        <p>Я розпакую ваш TG-архів у сотні одиниць контенту у вашому ж тоні голосу.</p>
+        <ul>
+          <li>Карусели для Instagram</li>
+          <li>Сценарії для TikTok і Reels</li>
+          <li>SEO-статті під ваші ключові запити</li>
+          <li>Email-ланцюжки для групи</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="service-icon">🌐</div>
+        <h3>Лендинг і воронка</h3>
+        <p>Один сайт замість 5 каналів з різним меседжем.</p>
+        <ul>
+          <li>Одна сторінка з цінами і кейсами</li>
+          <li>Форма запису з інтеграцією в месенджери</li>
+          <li>Прогрів через email/Telegram</li>
+          <li>Відстеження джерела кожного ліда</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="service-icon">💬</div>
+        <h3>Шаблони DM-відповідей і FAQ</h3>
+        <p>Швидкі відповіді в Direct і Telegram у вашому тоні голосу. Без автоматизації — ви самі надсилаєте за 10 секунд замість 3 хвилин.</p>
+        <ul>
+          <li>10–15 готових шаблонів на часті питання</li>
+          <li>Скрипт ціни, опису послуг, запису</li>
+          <li>Скрипт для повернення «довго думала» клієнток</li>
+          <li>Всі шаблони у вашому tone of voice</li>
+        </ul>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic;">Якщо клієнток стане багато — можна буде підключити AI-бот. Зараз у цьому немає сенсу.</p>
+      </div>
+
+      <div class="service reveal">
+        <div class="service-icon">📊</div>
+        <h3>Платна реклама</h3>
+        <p>Meta Ads на реальні ваші продукти, не на «диагностику з повітря».</p>
+        <ul>
+          <li>Таргет на жінок 28–50, Київ + діаспора</li>
+          <li>A/B-тести креативів через AI</li>
+          <li>Щотижневі звіти з інсайтами</li>
+          <li>Масштабування того, що спрацювало</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="service-icon">🎬</div>
+        <h3>Сценарії і контент-план</h3>
+        <p>Я пишу сценарії — ви знімаєте на телефон за 1 зйомочний день.</p>
+        <ul>
+          <li>Сценарії 8–10 коротких відео з ваших лонгрідів</li>
+          <li>Теми, які алгоритм IG/TikTok підтримує</li>
+          <li>Розкадровка і підказки по зйомці</li>
+          <li>Розклад публікацій на 4 тижні</li>
+        </ul>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic;">Монтаж відео — окрема послуга, не входить у ретейнер. Можу підключити свою студію або фрилансера.</p>
+      </div>
+
+      <div class="service reveal">
+        <div class="service-icon">📈</div>
+        <h3>Аналітика і звіти</h3>
+        <p>Прозоро видно, що працює, що ні.</p>
+        <ul>
+          <li>Дашборд із джерелами заявок</li>
+          <li>Щотижневий звіт у Telegram</li>
+          <li>Sentiment-аналіз коментарів</li>
+          <li>Прогноз на наступний місяць</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="cta-section">
+  <div class="container cta-inner">
+    <div class="reveal">
+      <div class="eyebrow light">Наступний крок</div>
+      <h2>Готую для вас детальний план робіт</h2>
+      <p>Цей аудит — перша частина. Далі я складу окремий документ «План робіт на 30 днів» — з конкретними задачами по тижнях, дедлайнами і тим, що від вас потрібно на кожному етапі. Після цього стартуємо.</p>
+      <a href="plan.html" class="btn btn-primary" style="margin-right: 12px;">Дивитись план робіт →</a>
+      <a href="РАЗБОР_И_ПЛАН.md" class="btn btn-ghost" style="color: white; border-color: rgba(255,255,255,0.3);">Повний аудит (MD)</a>
+    </div>
+
+    <div class="contact-card reveal">
+      <div class="name">Андрій Красік</div>
+      <div class="role">AI-автоматизатор · AI-маркетолог</div>
+      <div class="contact-item"><div class="ico">📍</div><div>Київ</div></div>
+      <div class="contact-item"><div class="ico">💬</div><div>Telegram: @krasprod</div></div>
+      <div class="contact-item"><div class="ico">📧</div><div>krasprod.nk@gmail.com</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="container">
+    © 2026 · Персональний аудит для Оксани Запорожець, психологині. Зроблено з AI та увагою до деталей.
+  </div>
+</div>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
