@@ -604,6 +604,7 @@ function toggleTask(phaseIdx, taskIdx) {
   task.done = !task.done;
   const isPhaseComplete = phase.tasks.every(t => t.done);
   if (!wasPhaseComplete && isPhaseComplete) {
+    logEvent(`✅ Етап завершено: «${phase.title}». Усі ${phase.tasks.length} задач виконано.`, true);
     notifyTelegram(
       `✅ <b>Етап завершено</b>\n\n` +
       `<b>Проєкт:</b> ${state.data.project.name}\n` +
@@ -613,6 +614,17 @@ function toggleTask(phaseIdx, taskIdx) {
   }
   markDirty();
   render();
+}
+
+function logEvent(text, milestone = false) {
+  if (!state.data.events) state.data.events = [];
+  const now = new Date();
+  state.data.events.unshift({
+    date: now.toISOString().slice(0,10),
+    time: now.toTimeString().slice(0,5),
+    text: text,
+    type: milestone ? 'milestone' : ''
+  });
 }
 
 function renderPayBlock(phase, idx) {
@@ -642,6 +654,7 @@ function togglePaid(idx) {
   if (phase.paid) {
     phase.paid_date = new Date().toISOString().slice(0,10);
     phase.paid_amount = Number(phase.price) || 0;
+    logEvent(`💰 Оплата отримана: «${phase.title}» — ${fmtMoney(phase.paid_amount)}. Робота стартує.`, true);
     notifyTelegram(
       `💰 <b>Етап оплачено</b>\n\n` +
       `<b>Проєкт:</b> ${state.data.project.name}\n` +
@@ -651,6 +664,7 @@ function togglePaid(idx) {
   } else {
     phase.paid_date = '';
     phase.paid_amount = 0;
+    logEvent(`↺ Позначка оплати знята з етапу «${phase.title}».`);
   }
   markDirty();
   render();
@@ -769,6 +783,11 @@ async function sendRequestResponse(phaseIdx, reqIdx) {
     if (!r.ok) throw new Error('Сервіс відправки недоступний');
     const form = textarea.parentElement;
     form.innerHTML = '<div class="request-sent">✓ Відповідь надіслано. Дякуємо! Андрій отримав її і незабаром оновить статус запиту.</div>';
+    req.response = text;
+    req.response_date = new Date().toISOString().slice(0,10);
+    req.status = 'received';
+    logEvent(`📩 Клієнт надіслав відповідь на запит «${req.title}» (етап «${phase.title}»).`);
+    markDirty();
     notifyTelegram(
       `📩 <b>Нова відповідь від клієнта</b>\n\n` +
       `<b>Проєкт:</b> ${state.data.project.name}\n` +
@@ -785,10 +804,16 @@ async function sendRequestResponse(phaseIdx, reqIdx) {
 }
 
 function cycleStatus(phaseIdx, reqIdx) {
-  const req = state.data.phases[phaseIdx].client_requests[reqIdx];
+  const phase = state.data.phases[phaseIdx];
+  const req = phase.client_requests[reqIdx];
   const next = { pending: 'received', received: 'done', done: 'pending' };
   req.status = next[req.status || 'pending'];
-  if (req.status === 'received' && !req.response_date) req.response_date = new Date().toISOString().slice(0,10);
+  if (req.status === 'received') {
+    if (!req.response_date) req.response_date = new Date().toISOString().slice(0,10);
+    logEvent(`📥 Отримано відповідь клієнта на запит «${req.title}» (етап «${phase.title}»).`);
+  } else if (req.status === 'done') {
+    logEvent(`✓ Запит «${req.title}» закрито (етап «${phase.title}»).`);
+  }
   markDirty();
   render();
 }
@@ -847,6 +872,9 @@ function markDirty() {
   state.dirty = true;
   state.data.project.last_updated = new Date().toISOString();
   document.getElementById('admin-status').innerHTML = '<span class="admin-unsaved">НЕ ЗБЕРЕЖЕНО</span>';
+  if (!state.admin || state.autosaveDisabled) return;
+  clearTimeout(state._autosaveTimer);
+  state._autosaveTimer = setTimeout(() => { saveData(); }, 1500);
 }
 
 async function saveData() {
@@ -885,12 +913,11 @@ async function saveData() {
     const j = await r.json();
     state.sha = j.content.sha;
     state.dirty = false;
-    document.getElementById('admin-status').innerHTML = '✓ Збережено. GitHub Pages оновиться за ~1 хв.';
-    setTimeout(() => {
-      if (!state.dirty) document.getElementById('admin-status').textContent = 'Зміни ще не збережено.';
-    }, 5000);
+    state.autosaveDisabled = false;
+    document.getElementById('admin-status').innerHTML = '✓ Автозбережено · ' + new Date().toLocaleTimeString('uk-UA').slice(0,5);
   } catch (e) {
-    document.getElementById('admin-status').textContent = '❌ Помилка: ' + e.message;
+    state.autosaveDisabled = true;
+    document.getElementById('admin-status').innerHTML = '❌ ' + e.message + '<br><span style="font-size:11px;color:var(--muted)">Автозбереження вимкнено. Виправте токен і натисніть «Зберегти прогрес».</span>';
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {
       localStorage.removeItem('gh_pat');
     }
