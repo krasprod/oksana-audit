@@ -686,6 +686,19 @@ function renderRequests(phase, idx) {
     const projectName = (state.data.project.name || '').replace(/"/g, '&quot;');
     const tgMsg = encodeURIComponent(`Відповідь на запит «${r.title}» (етап: ${phase.title}, проєкт: ${state.data.project.name}):\n\n`);
     const tgUrl = `${state.data.contact?.telegram || 'https://t.me/andreykrasik'}?text=${tgMsg}`;
+    const locallySentKey = `sent_${REPO}_${r.id || idx + '.' + ri}`;
+    const locallySent = !state.admin && !hasResponse && r.status === 'pending' && localStorage.getItem(locallySentKey);
+    if (locallySent) {
+      return `
+        <div class="request-card sent-card" data-req="${idx}.${ri}">
+          <div class="request-head">
+            <div class="request-title">${r.title}</div>
+            <span class="status-pill received">✓ Надіслано</span>
+          </div>
+          <div class="request-sent">Дякуємо, Ваша відповідь отримана. Андрій оновить статус запиту найближчим часом.</div>
+        </div>
+      `;
+    }
     return `
       <div class="request-card" data-req="${idx}.${ri}">
         <div class="request-head">
@@ -783,6 +796,9 @@ async function sendRequestResponse(phaseIdx, reqIdx) {
     if (!r.ok) throw new Error('Сервіс відправки недоступний');
     const form = textarea.parentElement;
     form.innerHTML = '<div class="request-sent">✓ Відповідь надіслано. Дякуємо! Андрій отримав її і незабаром оновить статус запиту.</div>';
+    try {
+      localStorage.setItem(`sent_${REPO}_${req.id || phaseIdx + '.' + reqIdx}`, JSON.stringify({ at: Date.now(), text }));
+    } catch (e) {}
     req.response = text;
     req.response_date = new Date().toISOString().slice(0,10);
     req.status = 'received';
